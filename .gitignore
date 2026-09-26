@@ -1,0 +1,16 @@
+node_modules
+dist
+.DS_Store
+*.log
+tsconfig.tsbuildinfo
+
+# Keep original heavy model backups local; deploy optimized versions instead.
+public/models/coffee-cup.glb
+public/models/decor-art.glb
+public/models/new-cabinet.glb
+public/models/new-easel.glb
+public/models/rug-model.glb
+
+# Local reference / preview files
+.reference
+.video-preview
