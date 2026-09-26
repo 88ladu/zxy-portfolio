@@ -4,6 +4,7 @@ import { Suspense, useCallback, useMemo } from 'react'
 import * as THREE from 'three'
 import { useLoader } from '@react-three/fiber'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
+import { assetPath } from '@/assetPath'
 
 function Inner({
   url,
@@ -63,7 +64,7 @@ export function FbxPlant({
   position,
   height = 1.55,
   rotationY = 0,
-  url = '/models/plant.fbx',
+  url = assetPath('/models/plant.fbx'),
 }: {
   position: [number, number, number]
   height?: number

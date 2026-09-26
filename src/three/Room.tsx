@@ -10,6 +10,7 @@ import { dragState, useApp } from '@/store'
 import { navigateToPage } from '@/navigation'
 import { WindowModel } from './WindowModel'
 import { GlbModel } from './GlbModel'
+import { assetPath } from '@/assetPath'
 import { toggleCassetteMusic } from '@/music'
 import {
   artTexture,
@@ -205,7 +206,7 @@ export function Room() {
         onPointerOut={() => hoverCursor(false)}
       >
         <GlbModel
-          url="/models/cassette-tape.glb"
+          url={assetPath('/models/cassette-tape.glb')}
           fit="width"
           size={0.52}
           position={[0, 0.04, 0.02]}
@@ -266,10 +267,10 @@ function VinylRecord({
 
 function SeasonWindowView({ season }: { season: 'spring' | 'summer' | 'autumn' | 'winter' }) {
   const src = {
-    spring: '/window-scenes/spring.png',
-    summer: '/window-scenes/summer.png',
-    autumn: '/window-scenes/autumn.png',
-    winter: '/window-scenes/winter.png',
+    spring: assetPath('/window-scenes/spring.png'),
+    summer: assetPath('/window-scenes/summer.png'),
+    autumn: assetPath('/window-scenes/autumn.png'),
+    winter: assetPath('/window-scenes/winter.png'),
   }[season]
   const texture = useLoader(THREE.TextureLoader, src)
   useMemo(() => {

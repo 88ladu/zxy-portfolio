@@ -8,6 +8,7 @@ import { getEnv } from './environment'
 import { artTexture, bookRowTexture, paperTexture } from './textures'
 import { FbxPlant } from './FbxPlant'
 import { DeferredGlbModel } from './GlbModel'
+import { assetPath } from '@/assetPath'
 
 export function Decor() {
   const season = useApp((s) => s.season)
@@ -45,7 +46,7 @@ export function Decor() {
 
       {/* ── 黄色框：用户提供的新柜子，靠左墙收纳展示。 ── */}
       <group position={[-4.06, 0, -2.35]} rotation={[0, Math.PI / 2, 0]}>
-        <DeferredGlbModel url="/models/new-cabinet.optimized.glb" fit="height" size={1.62} position={[0, 0, 0]} delay={650} />
+        <DeferredGlbModel url={assetPath('/models/new-cabinet.optimized.glb')} fit="height" size={1.62} position={[0, 0, 0]} delay={650} />
         <pointLight position={[0.02, 1.18, 0.05]} color="#ffd9a5" intensity={0.18} distance={1.35} decay={2} />
         <group position={[0, 1.52, -0.18]}>
           <mesh position={[-0.28, 0.08, 0]} castShadow>
@@ -67,7 +68,7 @@ export function Decor() {
         onPointerOver={() => interactive && hoverCursor(true)}
         onPointerOut={() => hoverCursor(false)}
       >
-        <DeferredGlbModel url="/models/new-easel.optimized.glb" fit="height" size={1.5} position={[0, 0, 0]} delay={900} />
+        <DeferredGlbModel url={assetPath('/models/new-easel.optimized.glb')} fit="height" size={1.5} position={[0, 0, 0]} delay={900} />
         <mesh position={[0, 0.86, 0]} visible={false}>
           <boxGeometry args={[1.0, 1.7, 0.75]} />
           <meshBasicMaterial transparent opacity={0} />
@@ -76,7 +77,7 @@ export function Decor() {
 
       {/* ── 右侧墙面装饰画：平衡窗户和画架附近的留白。 ── */}
       <DeferredGlbModel
-        url="/models/decor-art.optimized.glb"
+        url={assetPath('/models/decor-art.optimized.glb')}
         fit="height"
         size={1.22}
         position={[4.5, 1.48, -2.72]}
@@ -154,7 +155,7 @@ export function Decor() {
         <FbxPlant position={[-3.35, 0, -3.85]} height={1.55} rotationY={0.6} />
       )}
       <DeferredGlbModel
-        url="/models/orchid.glb"
+        url={assetPath('/models/orchid.glb')}
         fit="height"
         size={0.46}
         position={[2.3, 0.92, -4.35]}

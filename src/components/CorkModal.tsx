@@ -1,4 +1,5 @@
 // 电脑内页浮层：iframe 加载随站点交付的 public/desktop.html。
+import { assetPath } from '@/assetPath'
 import { useState } from 'react'
 import { useApp } from '@/store'
 
@@ -27,7 +28,7 @@ export function CorkModal() {
             正在载入…
           </div>
           <iframe
-            src="/desktop.html"
+            src={assetPath('/desktop.html')}
             title="数字工作台"
             className={loaded ? 'is-loaded' : ''}
             onLoad={() => setLoaded(true)}

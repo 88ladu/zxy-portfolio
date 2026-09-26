@@ -7,6 +7,7 @@ import { dragState, useApp } from '@/store'
 import { monitorWallpaperTexture, paperTexture } from './textures'
 import { ChairModel } from './ChairModel'
 import { DeferredGlbModel, GlbModel } from './GlbModel'
+import { assetPath } from '@/assetPath'
 import type { ThreeEvent } from '@react-three/fiber'
 
 export function Objects() {
@@ -145,7 +146,7 @@ export function Objects() {
             <boxGeometry args={[0.38, 0.68, 0.32]} />
             <meshBasicMaterial transparent opacity={0} depthWrite={false} />
           </mesh>
-          <GlbModel url="/models/light-desk.glb" fit="height" size={0.62} position={[0, 0, 0]} />
+          <GlbModel url={assetPath('/models/light-desk.glb')} fit="height" size={0.62} position={[0, 0, 0]} />
           <mesh position={[0.02, 0.49, 0.02]} rotation={[Math.PI / 2, 0, 0]}>
             <circleGeometry args={[0.065, 24]} />
             <meshStandardMaterial
@@ -243,7 +244,7 @@ export function Objects() {
         onPointerOver={() => interactive && hoverCursor(true)}
         onPointerOut={() => hoverCursor(false)}
       >
-        {lowSpec ? <SimpleChair /> : <ChairModel position={[0, 0, 0]} height={1.25} url="/models/executive-chair.fbx" />}
+        {lowSpec ? <SimpleChair /> : <ChairModel position={[0, 0, 0]} height={1.25} url={assetPath('/models/executive-chair.fbx')} />}
       </group>
     </group>
   )
@@ -366,7 +367,7 @@ function CoffeeCup({ interactive }: { interactive: boolean }) {
         <boxGeometry args={[0.44, 0.42, 0.44]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
-      <DeferredGlbModel url="/models/coffee-cup.optimized.glb" fit="max" size={0.34} position={[0, 0, 0]} delay={1400} />
+      <DeferredGlbModel url={assetPath('/models/coffee-cup.optimized.glb')} fit="max" size={0.34} position={[0, 0, 0]} delay={1400} />
       {(hovered || note) && (
         <group position={[0, 0.35, 0.01]}>
           {[0, 1, 2].map((i) => (

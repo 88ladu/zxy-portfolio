@@ -4,6 +4,7 @@ import { Suspense, useCallback, useMemo } from 'react'
 import * as THREE from 'three'
 import { useLoader } from '@react-three/fiber'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
+import { assetPath } from '@/assetPath'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 function Inner({
@@ -75,7 +76,7 @@ export function ChairModel({
   position,
   height = 1.0,
   rotationY = 0,
-  url = '/models/chair.fbx',
+  url = assetPath('/models/chair.fbx'),
 }: {
   position: [number, number, number]
   height?: number

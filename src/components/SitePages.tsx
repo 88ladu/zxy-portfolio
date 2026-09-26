@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { navigateHome, navigateToPage, pageFromHash, scrollToPage } from '@/navigation'
+import { assetPath } from '@/assetPath'
 
 const aboutInfo = [
   {
@@ -125,7 +126,7 @@ export function SitePages() {
             <div className="identity-paper">
               <span className="paperclip" aria-hidden="true" />
               <div className="identity-photo" aria-label="张芯瑜个人照片">
-                <img src="/about/zhang-xinyu-portrait.jpg" alt="张芯瑜个人照片" />
+                <img src={assetPath('/about/zhang-xinyu-portrait.jpg')} alt="张芯瑜个人照片" />
               </div>
               <div className="identity-top">
                 <span className="identity-eyebrow">ABOUT / 01</span>
@@ -275,7 +276,7 @@ export function SitePages() {
         <div className="works-grid">
           <div className="featured-work">
             <a className="work-cover work-cover-image" href="#/festival" aria-label="查看2025北京798艺术节项目介绍">
-              <img src="/projects/798/hero-final.jpg" alt="2025北京798艺术节主题展现场" />
+              <img src={assetPath('/projects/798/hero-final.jpg')} alt="2025北京798艺术节主题展现场" />
               <span>PROJECT 01</span>
             </a>
             <strong>展览策划 · 2025</strong>
@@ -312,7 +313,7 @@ export function SitePages() {
             </dl>
           </div>
           <figure className="case-hero-image">
-            <img src="/projects/798/hero-final.jpg" alt="2025北京798艺术节主题展沉浸空间现场" />
+            <img src={assetPath('/projects/798/hero-final.jpg')} alt="2025北京798艺术节主题展沉浸空间现场" />
             <figcaption>主题展现场 / 798国际艺术交流中心 / 2025</figcaption>
           </figure>
         </div>
@@ -323,7 +324,7 @@ export function SitePages() {
             <p>2025 北京 798 艺术节以“多觉·共生”为主题，围绕艺术、科技与多感官体验展开。作为实习设计师，我综合参与主题展《巨人星球：多觉艺术科技》的空间设计与策划执行工作，协助将抽象主题转化为可进入、可感知、可参与的展览现场。</p>
           </div>
           <figure>
-            <img src="/projects/798/visual-banner.jpg" alt="2025北京798艺术节园区主视觉物料" />
+            <img src={assetPath('/projects/798/visual-banner.jpg')} alt="2025北京798艺术节园区主视觉物料" />
             <figcaption>艺术节园区物料与主视觉</figcaption>
           </figure>
         </div>
@@ -346,15 +347,15 @@ export function SitePages() {
           </div>
           <div className="case-image-grid">
             <figure>
-              <img src="/projects/798/theme-page.jpg" alt="多觉共生主题分析页面" />
+              <img src={assetPath('/projects/798/theme-page.jpg')} alt="多觉共生主题分析页面" />
               <figcaption>主题分析</figcaption>
             </figure>
             <figure>
-              <img src="/projects/798/plan-page.jpg" alt="空间平面与动线方案页面" />
+              <img src={assetPath('/projects/798/plan-page.jpg')} alt="空间平面与动线方案页面" />
               <figcaption>空间动线</figcaption>
             </figure>
             <figure>
-              <img src="/projects/798/interaction-page.jpg" alt="互动设计方案页面" />
+              <img src={assetPath('/projects/798/interaction-page.jpg')} alt="互动设计方案页面" />
               <figcaption>互动节点</figcaption>
             </figure>
           </div>
@@ -362,7 +363,7 @@ export function SitePages() {
 
         <div className="case-editorial case-editorial-render">
           <figure className="case-large-image">
-            <img src="/projects/798/render-immersive.jpg" alt="798主题展沉浸空间Enscape渲染图" />
+            <img src={assetPath('/projects/798/render-immersive.jpg')} alt="798主题展沉浸空间Enscape渲染图" />
             <figcaption>Enscape 空间渲染 / 本人制作</figcaption>
           </figure>
           <div className="case-editorial-copy">
@@ -380,11 +381,11 @@ export function SitePages() {
           </div>
           <div className="case-comparison-grid">
             <figure>
-              <img src="/projects/798/render-wall.jpg" alt="主题展入口方案渲染图" />
+              <img src={assetPath('/projects/798/render-wall.jpg')} alt="主题展入口方案渲染图" />
               <figcaption>方案渲染</figcaption>
             </figure>
             <figure>
-              <img src="/projects/798/hero-entrance.jpg" alt="主题展最终现场照片" />
+              <img src={assetPath('/projects/798/hero-entrance.jpg')} alt="主题展最终现场照片" />
               <figcaption>最终现场</figcaption>
             </figure>
           </div>
@@ -398,15 +399,15 @@ export function SitePages() {
           </div>
           <div className="case-image-grid case-image-grid-small">
             <figure>
-              <img src="/projects/798/forum.jpg" alt="2025北京798艺术节论坛现场" />
+              <img src={assetPath('/projects/798/forum.jpg')} alt="2025北京798艺术节论坛现场" />
               <figcaption>论坛现场</figcaption>
             </figure>
             <figure>
-              <img src="/projects/798/workshop.jpg" alt="多觉巨人星球儿童艺术工作坊视觉" />
+              <img src={assetPath('/projects/798/workshop.jpg')} alt="多觉巨人星球儿童艺术工作坊视觉" />
               <figcaption>工作坊</figcaption>
             </figure>
             <figure>
-              <img src="/projects/798/guide.jpg" alt="策展人导览活动现场" />
+              <img src={assetPath('/projects/798/guide.jpg')} alt="策展人导览活动现场" />
               <figcaption>导览活动</figcaption>
             </figure>
           </div>
