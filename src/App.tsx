@@ -45,6 +45,15 @@ export default function App() {
   }, [ready])
 
   useEffect(() => {
+    if (!webgl || fallback || ready || !homeSceneEnabled) return
+    const t = window.setTimeout(() => {
+      const st = useApp.getState()
+      if (!st.ready && !st.fallback) st.setFallback(true)
+    }, 14000)
+    return () => window.clearTimeout(t)
+  }, [fallback, homeSceneEnabled, ready, webgl])
+
+  useEffect(() => {
     const onHash = () => {
       if (!pageFromHash()) setHomeSceneEnabled(true)
     }
