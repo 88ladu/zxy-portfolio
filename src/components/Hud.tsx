@@ -109,6 +109,11 @@ export function EnvironmentControls() {
 export function Loader({ fading }: { fading: boolean }) {
   const progress = useProgress((s) => s.progress)
   const percent = Math.min(100, Math.max(0, Math.round(progress)))
+  const [slow, setSlow] = useState(false)
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSlow(true), 6500)
+    return () => window.clearTimeout(timer)
+  }, [])
   return (
     <div className={`loader${fading ? ' is-fading' : ''}`} aria-hidden={fading}>
       <div className="loader-box">
@@ -123,7 +128,7 @@ export function Loader({ fading }: { fading: boolean }) {
         <div className="loader-progress" aria-hidden="true">
           <span style={{ width: `${percent}%` }} />
         </div>
-        <div className="loader-tip">桌面文件 · 墙面作品 · 个人资料 …</div>
+        <div className="loader-tip">{slow ? '模型较大，正在继续加载，请稍等 …' : '桌面文件 · 墙面作品 · 个人资料 …'}</div>
       </div>
     </div>
   )
