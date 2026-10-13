@@ -1,3 +1,4 @@
+import { ModelBoundary } from './GlbModel'
 // 用户提供的 FBX 绿植模型：自动归一化尺寸（按目标高度缩放、底面落地、中心对齐）。
 // lowSpec 下由 Decor 回退到程序化的简化绿植。
 import { Suspense, useCallback, useMemo } from 'react'
@@ -79,9 +80,9 @@ export function FbxPlant({
   )
   return (
     <group position={position}>
-      <Suspense fallback={null}>
+      <ModelBoundary key={url}><Suspense fallback={null}>
         <Inner url={url} height={height} rotationY={rotationY} onReady={onReady} />
-      </Suspense>
+      </Suspense></ModelBoundary>
     </group>
   )
 }

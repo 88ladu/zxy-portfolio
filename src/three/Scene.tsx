@@ -2,7 +2,7 @@
 import { useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 import { Canvas, useThree } from '@react-three/fiber'
-import { ContactShadows, useProgress } from '@react-three/drei'
+import { ContactShadows } from '@react-three/drei'
 import { useApp } from '@/store'
 import { getEnv } from './environment'
 import { Room } from './Room'
@@ -29,10 +29,19 @@ function EnvSetup() {
 }
 
 function LoadReporter({ onReady }: { onReady: () => void }) {
-  const progress = useProgress((s) => s.progress)
+  const { gl } = useThree()
   useEffect(() => {
-    if (progress >= 100) onReady()
-  }, [onReady, progress])
+    const frame = requestAnimationFrame(onReady)
+    const onLost = (event: Event) => {
+      event.preventDefault()
+      useApp.getState().setFallback(true)
+    }
+    gl.domElement.addEventListener('webglcontextlost', onLost)
+    return () => {
+      cancelAnimationFrame(frame)
+      gl.domElement.removeEventListener('webglcontextlost', onLost)
+    }
+  }, [gl, onReady])
   return null
 }
 
@@ -74,7 +83,7 @@ export function Scene({ onReady }: { onReady: () => void }) {
   return (
     <Canvas
       shadows={!lowSpec}
-      dpr={lowSpec ? 1 : mobile ? [1, 1.5] : [1, 2]}
+      dpr={lowSpec ? 1 : mobile ? [1, 1.25] : [1, 1.5]}
       gl={{ antialias: !lowSpec, toneMapping: THREE.ACESFilmicToneMapping }}
       camera={{ fov: 21, near: 0.1, far: 90, position: [10.2, 13.5, 12.8] }}
     >
@@ -91,7 +100,7 @@ export function Scene({ onReady }: { onReady: () => void }) {
           opacity={0.22}
           blur={mobile ? 2.2 : 2.8}
           far={2.8}
-          frames={mobile ? 1 : Infinity}
+          frames={1}
           resolution={mobile ? 512 : 1024}
           color="#7c684f"
         />

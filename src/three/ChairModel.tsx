@@ -1,3 +1,4 @@
+import { ModelBoundary } from './GlbModel'
 // 用户提供的椅子模型（FBX/GLB 自动识别）：按目标高度归一化、底面落地、中心对齐。
 // lowSpec 下由 Objects 回退为程序化简化椅子。
 import { Suspense, useCallback, useMemo } from 'react'
@@ -91,9 +92,9 @@ export function ChairModel({
   )
   return (
     <group position={position}>
-      <Suspense fallback={null}>
+      <ModelBoundary key={url}><Suspense fallback={null}>
         <Inner url={url} height={height} rotationY={rotationY} onReady={onReady} />
-      </Suspense>
+      </Suspense></ModelBoundary>
     </group>
   )
 }

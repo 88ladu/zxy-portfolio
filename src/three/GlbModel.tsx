@@ -1,7 +1,14 @@
-import { Suspense, useEffect, useMemo, useState } from 'react'
+import { Component, type ReactNode, Suspense, useEffect, useMemo, useState } from 'react'
 import * as THREE from 'three'
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+
+export class ModelBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch(error: Error) { console.error('Model failed to load:', error) }
+  render() { return this.state.failed ? null : this.props.children }
+}
 
 type Fit = 'height' | 'width' | 'depth' | 'max'
 
@@ -91,7 +98,7 @@ export function GlbModel({
 }) {
   return (
     <group position={position}>
-      <Suspense fallback={null}>
+      <ModelBoundary key={url}><Suspense fallback={null}>
         <Inner
           url={url}
           fit={fit}
@@ -101,7 +108,7 @@ export function GlbModel({
           roughness={roughness}
           metalness={metalness}
         />
-      </Suspense>
+      </Suspense></ModelBoundary>
     </group>
   )
 }

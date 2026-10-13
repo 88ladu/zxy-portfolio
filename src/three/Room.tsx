@@ -1,6 +1,6 @@
 // 房间本体：地面、平直墙体、简化搁板、后墙作品板与窗户。
 // 坐标约定：y 向上，后墙在 -z，左墙在 -x。
-import { useMemo, useRef, useState } from 'react'
+import { Suspense, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import type { ThreeEvent } from '@react-three/fiber'
 import { useFrame, useLoader } from '@react-three/fiber'
@@ -9,7 +9,7 @@ import { palette } from './palette'
 import { dragState, useApp } from '@/store'
 import { navigateToPage } from '@/navigation'
 import { WindowModel } from './WindowModel'
-import { GlbModel } from './GlbModel'
+import { GlbModel, ModelBoundary } from './GlbModel'
 import { assetPath } from '@/assetPath'
 import { toggleCassetteMusic } from '@/music'
 import {
@@ -156,7 +156,7 @@ export function Room() {
       </group>
 
       {/* 黄色区域：放大窗户模型。 */}
-      <SeasonWindowView season={season} />
+      <ModelBoundary key={season}><Suspense fallback={null}><SeasonWindowView season={season} /></Suspense></ModelBoundary>
       <WindowModel position={[3.0, 2.38, -4.54]} height={1.95} rotationY={0} />
 
       {/* 暖深色四屉矮柜与柜面书堆 */}
