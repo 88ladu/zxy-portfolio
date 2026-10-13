@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Component, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useApp } from '@/store'
 import { Scene } from '@/three/Scene'
 import { Topbar } from '@/components/Topbar'
@@ -12,6 +12,16 @@ import { Fallback } from '@/components/Fallback'
 import { SitePages } from '@/components/SitePages'
 import { navigateHome, pageFromHash } from '@/navigation'
 import { HOTSPOTS } from '@/three/hotspotConfig'
+
+class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch(error: Error) {
+    console.error('Studio scene failed:', error)
+    useApp.getState().setFallback(true)
+  }
+  render() { return this.state.failed ? null : this.props.children }
+}
 
 function detectWebGL(): boolean {
   try {
@@ -95,7 +105,7 @@ export default function App() {
   return (
     <div className="site-shell">
       <section id="home" className="stage" aria-label="3D 个人工作室首页">
-        {homeSceneEnabled && <Scene onReady={() => useApp.getState().setReady(true)} />}
+        {homeSceneEnabled && <SceneBoundary><Scene onReady={() => useApp.getState().setReady(true)} /></SceneBoundary>}
         <Topbar />
         <EnvironmentControls />
         <Hero />
