@@ -29,5 +29,5 @@ export function navigateToPage(page: SitePage) {
 
 export function navigateHome() {
   window.location.hash = '/'
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  window.scrollTo({ top: 0, behavior: 'instant' })
 }

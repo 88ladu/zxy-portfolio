@@ -47,7 +47,7 @@ export default function App() {
   const fallback = useApp((s) => s.fallback)
   const ready = useApp((s) => s.ready)
   const [loaderGone, setLoaderGone] = useState(false)
-  const [homeSceneEnabled, setHomeSceneEnabled] = useState(() => !pageFromHash())
+  const homeSceneEnabled = true
   useEffect(() => {
     if (!ready) return
     const t = setTimeout(() => setLoaderGone(true), 700)
@@ -61,14 +61,6 @@ export default function App() {
     }, 8500)
     return () => window.clearTimeout(t)
   }, [homeSceneEnabled, ready])
-
-  useEffect(() => {
-    const onHash = () => {
-      if (!pageFromHash()) setHomeSceneEnabled(true)
-    }
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
 
   // 键盘：Esc 返回/关闭；1-3 进入页面；R 复位；←/→ 在聚焦间切换
   useEffect(() => {
