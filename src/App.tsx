@@ -45,6 +45,14 @@ export default function App() {
   }, [ready])
 
   useEffect(() => {
+    if (ready || !homeSceneEnabled) return
+    const t = window.setTimeout(() => {
+      useApp.getState().setReady(true)
+    }, 8500)
+    return () => window.clearTimeout(t)
+  }, [homeSceneEnabled, ready])
+
+  useEffect(() => {
     const onHash = () => {
       if (!pageFromHash()) setHomeSceneEnabled(true)
     }
