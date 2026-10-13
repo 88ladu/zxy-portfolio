@@ -1,3 +1,5 @@
+import { assetPath } from './assetPath'
+
 export type SitePage = 'about' | 'projects' | 'portfolio' | 'festival'
 
 const sectionByPage: Record<SitePage, string> = {
@@ -14,6 +16,10 @@ export function pageFromHash(hash = window.location.hash): SitePage | null {
 }
 
 export function scrollToPage(page: SitePage, behavior: ScrollBehavior = 'smooth') {
+  if (page === 'festival') {
+    window.location.replace(assetPath('/projects/798.html'))
+    return
+  }
   document.getElementById(sectionByPage[page])?.scrollIntoView({ behavior, block: 'start' })
 }
 
