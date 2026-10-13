@@ -54,7 +54,7 @@ const works = [
     type: '展览策划 · 2025',
     title: '2025北京798艺术节《巨人星球》',
     text: '从主题梳理、空间设计到现场执行，参与艺术科技展览的完整落地。',
-    href: '#/festival',
+    href: assetPath('/projects/798.html'),
   },
   {
     index: '02',
@@ -69,34 +69,6 @@ const works = [
     title: '作品集版式与项目档案',
     text: '统一作品封面、项目信息、过程记录和最终成果的展示语言。',
     href: '#/portfolio',
-  },
-]
-
-const festivalSteps = [
-  {
-    label: '01',
-    title: '发现问题',
-    text: '艺术节包含主题展、论坛、讲堂、工作坊与导览等多种内容，需要建立统一的体验秩序。',
-  },
-  {
-    label: '02',
-    title: '调研分析',
-    text: '围绕展览内容、场地条件和观众路径，梳理入口、动线、展区与停留节点。',
-  },
-  {
-    label: '03',
-    title: '确定方向',
-    text: '以空间承载主题，以活动延展体验，将“多觉·共生”转化为可进入的现场。',
-  },
-  {
-    label: '04',
-    title: '方案迭代',
-    text: '通过方案 PDF、平面推敲和 Enscape 渲染，验证空间氛围、观看关系与互动路径。',
-  },
-  {
-    label: '05',
-    title: '最终落地',
-    text: '全程参与布展、导览系统、媒体物料与活动执行协同，推动方案进入真实现场。',
   },
 ]
 
@@ -275,12 +247,12 @@ export function SitePages() {
         </div>
         <div className="works-grid">
           <div className="featured-work">
-            <a className="work-cover work-cover-image" href="#/festival" aria-label="查看2025北京798艺术节项目介绍">
+            <a className="work-cover work-cover-image" href={assetPath('/projects/798.html')} target="_blank" rel="noopener noreferrer" aria-label="查看2025北京798艺术节项目介绍">
               <img src={assetPath('/projects/798/hero-final.jpg')} alt="2025北京798艺术节主题展现场" />
               <span>PROJECT 01</span>
             </a>
             <strong>展览策划 · 2025</strong>
-            <a href="#/festival">查看项目介绍</a>
+            <a href={assetPath('/projects/798.html')} target="_blank" rel="noopener noreferrer">查看项目介绍</a>
           </div>
           <div className="work-list">
             {works.map((work) => (
@@ -291,134 +263,13 @@ export function SitePages() {
                   <h3>{work.title}</h3>
                   <p>{work.text}</p>
                 </div>
-                <a href={work.href}>查看介绍</a>
+                <a href={work.href} target={work.index === '01' ? '_blank' : undefined} rel={work.index === '01' ? 'noopener noreferrer' : undefined}>查看介绍</a>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-
-      <section id="festival-case" className="content-section case-study-section">
-        <div className="case-kicker">PROJECT 01 / 展览策划与空间设计</div>
-        <div className="case-hero">
-          <div className="case-hero-copy">
-            <span>2025 · 北京 798国际艺术交流中心</span>
-            <h2>2025北京798艺术节《巨人星球：多觉艺术科技》</h2>
-            <p>以“多觉·共生”为主题，参与主题展空间设计、整体策划、方案表达与现场执行协同。</p>
-            <dl>
-              <div><dt>身份</dt><dd>实习设计师</dd></div>
-              <div><dt>工作</dt><dd>空间方案 / Enscape 渲染 / 方案 PDF / 策划支持 / 现场落地</dd></div>
-              <div><dt>方向</dt><dd>艺术科技展览 · 策划运营 · 空间体验</dd></div>
-            </dl>
-          </div>
-          <figure className="case-hero-image">
-            <img src={assetPath('/projects/798/hero-final.jpg')} alt="2025北京798艺术节主题展沉浸空间现场" />
-            <figcaption>主题展现场 / 798国际艺术交流中心 / 2025</figcaption>
-          </figure>
-        </div>
-
-        <div className="case-overview">
-          <div>
-            <span className="case-label">项目概述</span>
-            <p>2025 北京 798 艺术节以“多觉·共生”为主题，围绕艺术、科技与多感官体验展开。作为实习设计师，我综合参与主题展《巨人星球：多觉艺术科技》的空间设计与策划执行工作，协助将抽象主题转化为可进入、可感知、可参与的展览现场。</p>
-          </div>
-          <figure>
-            <img src={assetPath('/projects/798/visual-banner.jpg')} alt="2025北京798艺术节园区主视觉物料" />
-            <figcaption>艺术节园区物料与主视觉</figcaption>
-          </figure>
-        </div>
-
-        <div className="case-process" aria-label="项目闭环流程">
-          {festivalSteps.map((step) => (
-            <article key={step.label} className="case-process-item">
-              <span>{step.label}</span>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className="case-editorial case-editorial-plan">
-          <div className="case-editorial-copy">
-            <span className="case-label">调研分析 / 确定方向</span>
-            <h3>用空间承载主题，用活动延展体验。</h3>
-            <p>项目初期需要在主题展、论坛、讲堂、工作坊和导览之间建立统一逻辑。我围绕内容、空间和观众路径进行梳理，明确空间不仅承担展示功能，也需要成为串联感官体验与活动内容的媒介。</p>
-          </div>
-          <div className="case-image-grid">
-            <figure>
-              <img src={assetPath('/projects/798/theme-page.jpg')} alt="多觉共生主题分析页面" />
-              <figcaption>主题分析</figcaption>
-            </figure>
-            <figure>
-              <img src={assetPath('/projects/798/plan-page.jpg')} alt="空间平面与动线方案页面" />
-              <figcaption>空间动线</figcaption>
-            </figure>
-            <figure>
-              <img src={assetPath('/projects/798/interaction-page.jpg')} alt="互动设计方案页面" />
-              <figcaption>互动节点</figcaption>
-            </figure>
-          </div>
-        </div>
-
-        <div className="case-editorial case-editorial-render">
-          <figure className="case-large-image">
-            <img src={assetPath('/projects/798/render-immersive.jpg')} alt="798主题展沉浸空间Enscape渲染图" />
-            <figcaption>Enscape 空间渲染 / 本人制作</figcaption>
-          </figure>
-          <div className="case-editorial-copy">
-            <span className="case-label">方案迭代</span>
-            <h3>用渲染提前验证观看关系。</h3>
-            <p>通过平面布局、分区关系、视角推敲和沉浸空间效果图，持续验证观众进入、停留、观看和互动的体验路径。</p>
-          </div>
-        </div>
-
-        <div className="case-comparison">
-          <div className="case-comparison-head">
-            <span className="case-label">最终落地</span>
-            <h3>从方案图到真实现场</h3>
-            <p>渲染用于预演空间氛围和视觉节奏，现场照片记录方案落地后的真实观看关系。</p>
-          </div>
-          <div className="case-comparison-grid">
-            <figure>
-              <img src={assetPath('/projects/798/render-wall.jpg')} alt="主题展入口方案渲染图" />
-              <figcaption>方案渲染</figcaption>
-            </figure>
-            <figure>
-              <img src={assetPath('/projects/798/hero-entrance.jpg')} alt="主题展最终现场照片" />
-              <figcaption>最终现场</figcaption>
-            </figure>
-          </div>
-        </div>
-
-        <div className="case-editorial case-editorial-operation">
-          <div className="case-editorial-copy">
-            <span className="case-label">策划执行</span>
-            <h3>在真实项目中理解设计如何被执行。</h3>
-            <p>我全程参与现场布展、导览系统、媒体物料和活动执行协同，进一步理解艺术科技项目从概念提出、内容组织、空间表达，到现场运营的完整推进过程。</p>
-          </div>
-          <div className="case-image-grid case-image-grid-small">
-            <figure>
-              <img src={assetPath('/projects/798/forum.jpg')} alt="2025北京798艺术节论坛现场" />
-              <figcaption>论坛现场</figcaption>
-            </figure>
-            <figure>
-              <img src={assetPath('/projects/798/workshop.jpg')} alt="多觉巨人星球儿童艺术工作坊视觉" />
-              <figcaption>工作坊</figcaption>
-            </figure>
-            <figure>
-              <img src={assetPath('/projects/798/guide.jpg')} alt="策展人导览活动现场" />
-              <figcaption>导览活动</figcaption>
-            </figure>
-          </div>
-        </div>
-
-        <div className="case-reflection">
-          <span>REFLECTION</span>
-          <p>这个项目让我从空间设计进入真实策展与运营现场，理解一个艺术科技项目如何从概念、方案、视觉表达走向公众体验。</p>
-          <a href="#/portfolio">← 返回作品列表</a>
-        </div>
-      </section>
 
       <section id="contact" className="content-section contact-section">
         <span>CONTACT</span>
