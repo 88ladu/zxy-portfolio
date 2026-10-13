@@ -1,5 +1,5 @@
 import { useApp } from '@/store'
-import { navigateToPage } from '@/navigation'
+import { navigateHome, navigateToPage } from '@/navigation'
 
 export function Topbar() {
   const lowSpec = useApp((s) => s.lowSpec)
@@ -32,7 +32,7 @@ export function Topbar() {
         <button type="button" className="btn" onClick={() => setOverlay('overview')}>
           全部内容
         </button>
-        <button type="button" className="btn" onClick={resetView}>
+        <button type="button" className="btn" onClick={() => { resetView(); navigateHome() }}>
           复位视角
         </button>
         <button type="button" className="btn" onClick={() => setLowSpec(!lowSpec)}>
