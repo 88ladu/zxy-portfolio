@@ -6,8 +6,8 @@ import { assetPath } from '@/assetPath'
 import './StudioPlay.css'
 
 export function Atmosphere() {
-  const weather=useApp(s=>s.weather)
-  return <div className={`studio-sky sky-${weather}`} aria-hidden="true">{(weather==='rain'||weather==='snow')&&<div className={`weather-flakes flakes-${weather}`}>{Array.from({length:weather==='rain'?48:36},(_,i)=><span key={i} style={{left:`${(i*37)%100}%`,animationDelay:`-${(i*1.7)%12}s`,animationDuration:`${weather==='rain'?1.1+(i%4)*.18:7+(i%5)}s`,top:`${(i*19)%100}%`}} />)}</div>}{weather==='aurora'&&<><div className="aurora-ribbon ribbon-one"/><div className="aurora-ribbon ribbon-two"/></>}</div>
+  const weather=useApp(s=>s.weather),time=useApp(s=>s.time)
+  return <div className={`studio-sky sky-${weather} sky-${time}`} aria-hidden="true" />
 }
 export function MusicPlayer() {
   const open=useApp(s=>s.musicPanelOpen),playing=useApp(s=>s.musicOn)

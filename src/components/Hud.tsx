@@ -2,7 +2,7 @@ import { useApp } from '@/store'
 import { useEffect, useState } from 'react'
 import { useProgress } from '@react-three/drei'
 import { navigateToPage, pageFromHash } from '@/navigation'
-import { SEASONS, TIMES } from '@/three/environment'
+const DAY_NIGHT = [{ id: 'noon', label: '日间' }, { id: 'night', label: '夜间' }] as const
 
 export function Hero() {
   const mode = useApp((s) => s.mode)
@@ -78,23 +78,10 @@ export function EnvironmentControls() {
   return (
     <div className="stage-env-switches" aria-label="场景氛围">
       <div className="switch-group studio-weather-switch" role="group" aria-label="天气场景">
-        {(['clear','rain','snow','aurora'] as const).map((w,i)=><button key={w} className={`chip${weather===w?' is-active':''}`} aria-pressed={weather===w} onClick={()=>setWeather(w)}>{['晴天','下雨','下雪','极光'][i]}</button>)}
-      </div>
-      <div className="switch-group" role="group" aria-label="季节">
-        {SEASONS.map((s) => (
-          <button
-            key={s.id}
-            type="button"
-            className={`chip${season === s.id ? ' is-active' : ''}`}
-            aria-pressed={season === s.id}
-            onClick={() => setSeason(s.id)}
-          >
-            {s.label}
-          </button>
-        ))}
+        {(['clear','rain','snow','aurora','ocean'] as const).map((w,i)=><button key={w} className={`chip${weather===w?' is-active':''}`} aria-pressed={weather===w} onClick={()=>setWeather(w)}>{['晴天','下雨','下雪','极光','海浪'][i]}</button>)}
       </div>
       <div className="switch-group" role="group" aria-label="时段">
-        {TIMES.map((t) => (
+        {DAY_NIGHT.map((t) => (
           <button
             key={t.id}
             type="button"
