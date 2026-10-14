@@ -10,6 +10,7 @@ import { Objects } from './Objects'
 import { Decor } from './Decor'
 import { HotspotMarkers } from './Hotspot'
 import { CameraRig } from './CameraRig'
+import { WeatherParticles } from './Weather'
 
 function isMobileDevice() {
   if (typeof window === 'undefined') return false
@@ -18,13 +19,14 @@ function isMobileDevice() {
 
 function EnvSetup() {
   const { gl, scene } = useThree()
+  const weather = useApp(s => s.weather)
   const season = useApp((s) => s.season)
   const time = useApp((s) => s.time)
   const env = useMemo(() => getEnv(season, time), [season, time])
   useEffect(() => {
-    scene.background = new THREE.Color(env.background)
+    scene.background = weather === 'clear' ? new THREE.Color(env.background) : null
     gl.toneMappingExposure = env.exposure
-  }, [gl, scene, env])
+  }, [gl, scene, env, weather])
   return null
 }
 
@@ -46,6 +48,8 @@ function LoadReporter({ onReady }: { onReady: () => void }) {
 }
 
 function Lights() {
+  const weather = useApp(s => s.weather)
+  const special = weather === 'aurora' || weather === 'rain'
   const lowSpec = useApp((s) => s.lowSpec)
   const mobile = useMemo(isMobileDevice, [])
   const season = useApp((s) => s.season)
@@ -54,13 +58,13 @@ function Lights() {
   const shadowSize = lowSpec || mobile ? 1024 : 2048
   return (
     <>
-      <ambientLight color={env.ambientColor} intensity={env.ambientIntensity} />
+      <ambientLight color={weather === 'aurora' ? '#a7c5d4' : env.ambientColor} intensity={special ? .7 : env.ambientIntensity} />
       <hemisphereLight args={[env.skyTop, '#c2a982', 0.42]} />
       <directionalLight
         castShadow={!lowSpec}
         position={env.sunPos}
         color={env.sunColor}
-        intensity={env.sunIntensity}
+        intensity={special ? .8 : env.sunIntensity}
         shadow-mapSize-width={shadowSize}
         shadow-mapSize-height={shadowSize}
         shadow-camera-left={-9}
@@ -79,6 +83,7 @@ function Lights() {
 
 export function Scene({ onReady }: { onReady: () => void }) {
   const lowSpec = useApp((s) => s.lowSpec)
+  const weather = useApp(s => s.weather)
   const mobile = useMemo(isMobileDevice, [])
   return (
     <Canvas
@@ -90,6 +95,8 @@ export function Scene({ onReady }: { onReady: () => void }) {
       <LoadReporter onReady={onReady} />
       <EnvSetup />
       <Lights />
+      <WeatherParticles />
+      {weather === 'aurora' && <pointLight position={[0,5,-4]} color="#58d8c7" intensity={4} distance={15} />}
       <Room />
       <Objects />
       <Decor />

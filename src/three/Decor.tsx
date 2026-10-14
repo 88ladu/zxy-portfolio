@@ -9,6 +9,7 @@ import { artTexture, bookRowTexture, paperTexture } from './textures'
 import { FbxPlant } from './FbxPlant'
 import { DeferredGlbModel } from './GlbModel'
 import { assetPath } from '@/assetPath'
+import { DrawingSurface } from './DrawingSurface'
 
 export function Decor() {
   const season = useApp((s) => s.season)
@@ -36,7 +37,7 @@ export function Decor() {
   }
   const openPortfolio = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation()
-    if (interactive && !dragState.moved) focus('easel')
+    if (interactive && !dragState.moved) { focus('easel'); useApp.getState().setOverlay('draw') }
   }
 
   return (
@@ -45,7 +46,7 @@ export function Decor() {
       <CozyReferenceRug />
 
       {/* ── 黄色框：用户提供的新柜子，靠左墙收纳展示。 ── */}
-      <group position={[-4.06, 0, -2.35]} rotation={[0, Math.PI / 2, 0]}>
+      <group position={[-3.5, 0, -2.35]} rotation={[0, Math.PI / 2, 0]}>
         <DeferredGlbModel url={assetPath('/models/new-cabinet.optimized.glb')} fit="height" size={1.62} position={[0, 0, 0]} delay={650} />
         <pointLight position={[0.02, 1.18, 0.05]} color="#ffd9a5" intensity={0.18} distance={1.35} decay={2} />
         <group position={[0, 1.52, -0.18]}>
@@ -69,6 +70,7 @@ export function Decor() {
         onPointerOut={() => hoverCursor(false)}
       >
         <DeferredGlbModel url={assetPath('/models/new-easel.optimized.glb')} fit="height" size={1.5} position={[0, 0, 0]} delay={900} />
+        <DrawingSurface />
         <mesh position={[0, 0.86, 0]} visible={false}>
           <boxGeometry args={[1.0, 1.7, 0.75]} />
           <meshBasicMaterial transparent opacity={0} />
@@ -80,32 +82,13 @@ export function Decor() {
         url={assetPath('/models/decor-art.optimized.glb')}
         fit="height"
         size={1.22}
-        position={[4.5, 1.48, -2.72]}
-        rotation={[0, Math.PI / 2, 0]}
+        position={[3.25, 2.05, -2.3]}
+        rotation={[0, -0.55, 0]}
         delay={1200}
       />
 
-      {/* ── 左侧小画架 ── */}
-      <group position={[-3.95, 0, 2.5]} rotation={[0, 0.6, 0]}>
-        <mesh position={[-0.22, 0.75, 0.03]} rotation={[0, 0, 0.22]} material={mats.leg} castShadow>
-          <boxGeometry args={[0.06, 1.55, 0.045]} />
-        </mesh>
-        <mesh position={[0.22, 0.75, 0.03]} rotation={[0, 0, -0.22]} material={mats.leg} castShadow>
-          <boxGeometry args={[0.06, 1.55, 0.045]} />
-        </mesh>
-        <mesh position={[0, 0.76, 0.38]} rotation={[0.3, 0, 0]} material={mats.leg} castShadow>
-          <boxGeometry args={[0.06, 1.6, 0.045]} />
-        </mesh>
-        <mesh position={[0, 1.0, 0.02]} rotation={[-0.06, 0, 0]} material={mats.plainCanvas}>
-          <planeGeometry args={[0.85, 1.1]} />
-        </mesh>
-        <mesh position={[0, 0.42, 0.05]} material={mats.leg}>
-          <boxGeometry args={[0.7, 0.04, 0.1]} />
-        </mesh>
-      </group>
-
       {/* ── 带轮木推车（左前） ── */}
-      <group position={[-4.05, 0, 0.9]} rotation={[0, 0.15, 0]}>
+      <group position={[-3.35, 0, -0.25]} rotation={[0, 0.15, 0]}>
         {[0.45, 0.82].map((y) => (
           <mesh key={y} position={[0, y, 0]} material={mats.wood} castShadow receiveShadow>
             <boxGeometry args={[0.85, 0.04, 0.5]} />
@@ -162,18 +145,8 @@ export function Decor() {
         rotation={[0, -0.25, 0]}
         delay={900}
       />
-      <group position={[-2.55, 0, 3.6]}>
-        <mesh position={[0, 0.12, 0]} material={mats.linen} castShadow>
-          <cylinderGeometry args={[0.14, 0.12, 0.24, 14]} />
-        </mesh>
-        <mesh position={[0, 0.36, 0]} castShadow>
-          <icosahedronGeometry args={[0.2, 0]} />
-          <meshStandardMaterial color={env.foliage} roughness={1} flatShading />
-        </mesh>
-      </group>
-
       {/* ── 地面零散纸本 ── */}
-      <mesh position={[-2.9, 0.012, 1.6]} rotation={[-Math.PI / 2, 0, 0.5]}>
+      <mesh position={[-2.5, 0.012, 0.6]} rotation={[-Math.PI / 2, 0, 0.5]}>
         <planeGeometry args={[0.42, 0.56]} />
         <meshStandardMaterial map={plainSheet} roughness={0.95} />
       </mesh>
@@ -181,15 +154,7 @@ export function Decor() {
         <planeGeometry args={[0.5, 0.66]} />
         <meshStandardMaterial map={plainSheet} roughness={0.95} />
       </mesh>
-      {/* 靠墙小画 */}
-      <mesh position={[-4.56, 1.5, -1.6]} rotation={[0, Math.PI / 2, 0.04]}>
-        <planeGeometry args={[0.52, 0.68]} />
-        <meshStandardMaterial map={artTexture(6)} roughness={0.92} />
-      </mesh>
-      <mesh position={[-4.56, 1.2, 2.9]} rotation={[0, Math.PI / 2, -0.03]}>
-        <planeGeometry args={[0.44, 0.58]} />
-        <meshStandardMaterial map={artTexture(3)} roughness={0.92} />
-      </mesh>
+
     </group>
   )
 }

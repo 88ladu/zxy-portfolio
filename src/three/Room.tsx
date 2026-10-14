@@ -1,30 +1,24 @@
 // 房间本体：地面、平直墙体、简化搁板、后墙作品板与窗户。
 // 坐标约定：y 向上，后墙在 -z，左墙在 -x。
-import { Suspense, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import type { ThreeEvent } from '@react-three/fiber'
-import { useFrame, useLoader } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import { palette } from './palette'
 import { dragState, useApp } from '@/store'
-import { navigateToPage } from '@/navigation'
-import { WindowModel } from './WindowModel'
-import { GlbModel, ModelBoundary } from './GlbModel'
+import { GlbModel } from './GlbModel'
 import { assetPath } from '@/assetPath'
-import { toggleCassetteMusic } from '@/music'
+import { openStudioPlayer } from '@/music'
 import {
   artTexture,
   woodFloorTexture,
-  pinArtTexture,
   bookRowTexture,
 } from './textures'
 
 export function Room() {
   const mode = useApp((s) => s.mode)
-  const season = useApp((s) => s.season)
-  const activeId = useApp((s) => s.activeId)
   const focus = useApp((s) => s.focus)
-  const setMusicOn = useApp((s) => s.setMusicOn)
 
   const mats = useMemo(
     () => ({
@@ -43,31 +37,19 @@ export function Room() {
   const stop = (e: ThreeEvent<MouseEvent>) => e.stopPropagation()
   const openPortfolio = (e: ThreeEvent<MouseEvent>) => {
     stop(e)
-    if (interactive && !dragState.moved) focus('gallery')
+    if (interactive && !dragState.moved) { focus('gallery'); useApp.getState().setOverlay('case-preview') }
   }
   const playMusic = (e: ThreeEvent<MouseEvent>) => {
     stop(e)
-    if (interactive && !dragState.moved) setMusicOn(toggleCassetteMusic())
+    if (interactive && !dragState.moved) openStudioPlayer()
   }
-  const [hoveredWork, setHoveredWork] = useState<number | null>(null)
 
   return (
     <group>
       {/* 地面 */}
-      <mesh rotation-x={-Math.PI / 2} receiveShadow>
-        <planeGeometry args={[9.2, 9.4]} />
+      <mesh position={[0, -0.015, -1.8]} rotation-x={-Math.PI / 2} receiveShadow>
+        <planeGeometry args={[8.5, 5.6]} />
         <meshStandardMaterial map={floorTex} roughness={0.85} />
-      </mesh>
-
-      {/* 平直后墙与左右墙，去掉建筑结构后直接延伸到顶。 */}
-      <mesh position={[0, 2.6, -4.68]} material={mats.wall} receiveShadow>
-        <boxGeometry args={[9.2, 5.2, 0.16]} />
-      </mesh>
-      <mesh position={[-4.68, 2.6, 0]} material={mats.wall} receiveShadow castShadow>
-        <boxGeometry args={[0.16, 5.2, 9.4]} />
-      </mesh>
-      <mesh position={[4.68, 2.6, 0]} material={mats.wall} receiveShadow>
-        <boxGeometry args={[0.16, 5.2, 9.4]} />
       </mesh>
 
       {/* 左上搁板：简化黄色区域，只保留少量书和小画框。 */}
@@ -91,6 +73,8 @@ export function Room() {
         <meshStandardMaterial color={palette.linen} roughness={0.9} />
       </mesh>
 
+      {[-0.6, 1.5].map(x => <mesh key={x} position={[x, 1.2, -4.6]} castShadow><boxGeometry args={[0.055, 2.4, 0.06]} /><meshStandardMaterial color="#8b6d50" /></mesh>)}
+      <mesh position={[-2.55, 1.4, -4.65]} castShadow><boxGeometry args={[0.045, 2.8, 0.055]} /><meshStandardMaterial color="#8b6d50" /></mesh>
       {/* 蓝色区域：作品集板块移到后墙中部。 */}
       <group
         position={[0.45, 2.45, -4.57]}
@@ -104,60 +88,9 @@ export function Room() {
         <mesh position={[0, 0, 0.032]} material={mats.cork}>
           <planeGeometry args={[2.25, 1.35]} />
         </mesh>
-        {Array.from({ length: 3 }, (_, r) =>
-          Array.from({ length: 4 }, (_, c) => {
-            const index = r * 4 + c
-            const x = -0.78 + c * 0.52
-            const y = 0.42 - r * 0.42
-            return (
-              <group
-                key={`portfolio${r}${c}`}
-                position={[x, y, activeId === 'gallery' && hoveredWork === index ? 0.078 : 0.065]}
-                scale={activeId === 'gallery' && hoveredWork === index ? 1.035 : 1}
-                rotation={[0, 0, r % 2 === 0 ? 0.03 : -0.03]}
-                onPointerOver={(e) => {
-                  if (activeId !== 'gallery') return
-                  e.stopPropagation()
-                  document.body.style.cursor = 'pointer'
-                  setHoveredWork(index)
-                }}
-                onPointerOut={() => {
-                  document.body.style.cursor = ''
-                  setHoveredWork(null)
-                }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  if (dragState.moved) return
-                  if (activeId === 'gallery') navigateToPage('portfolio')
-                  else focus('gallery')
-                }}
-              >
-                <mesh>
-                  <planeGeometry args={[0.36, 0.27]} />
-                  <meshStandardMaterial map={pinArtTexture((r * 4 + c) % 8)} roughness={0.92} />
-                </mesh>
-                <mesh position={[0, 0.155, 0.01]}>
-                  <boxGeometry args={[0.012, 0.035, 0.04]} />
-                  <meshStandardMaterial color="#ffffff" roughness={0.6} transparent opacity={0.78} />
-                </mesh>
-                {activeId === 'gallery' && hoveredWork === index && (
-                  <Html position={[0.02, -0.28, 0.08]} center zIndexRange={[70, 0]} style={{ pointerEvents: 'none' }}>
-                    <div className="work-card-tip">
-                      <strong>{['数字文化展览', '空间叙事', 'AI 影像实验'][index % 3]}</strong>
-                      <span>{['DIGITAL EXHIBITION', 'SPATIAL STORY', 'AI VISUAL STUDY'][index % 3]}</span>
-                      <small>2025</small>
-                    </div>
-                  </Html>
-                )}
-              </group>
-            )
-          }),
-        )}
-      </group>
+        <ProjectDisplay />
 
-      {/* 黄色区域：放大窗户模型。 */}
-      <ModelBoundary key={season}><Suspense fallback={null}><SeasonWindowView season={season} /></Suspense></ModelBoundary>
-      <WindowModel position={[3.0, 2.38, -4.54]} height={1.95} rotationY={0} />
+      </group>
 
       {/* 暖深色四屉矮柜与柜面书堆 */}
       <mesh
@@ -251,61 +184,7 @@ function VinylRecord({
           <meshStandardMaterial color="#d8c7a2" roughness={0.7} />
         </mesh>
       </group>
-      {musicOn && (
-        <Html position={[0.88, -0.03, 0.08]} center zIndexRange={[80, 0]} style={{ pointerEvents: 'none' }}>
-          <div className="radio-widget">
-            <strong>Mariah Carey/Without You</strong>
-            <div className="radio-controls" aria-hidden="true">
-              <span className="radio-play" />
-            </div>
-          </div>
-        </Html>
-      )}
-    </group>
-  )
-}
 
-function SeasonWindowView({ season }: { season: 'spring' | 'summer' | 'autumn' | 'winter' }) {
-  const src = {
-    spring: assetPath('/window-scenes/spring.png'),
-    summer: assetPath('/window-scenes/summer.png'),
-    autumn: assetPath('/window-scenes/autumn.png'),
-    winter: assetPath('/window-scenes/winter.png'),
-  }[season]
-  const texture = useLoader(THREE.TextureLoader, src)
-  useMemo(() => {
-    const image = texture.image as HTMLImageElement | undefined
-    const planeAspect = 1.45 / 1.62
-    const imageAspect = image?.width && image?.height ? image.width / image.height : 0.68
-    texture.colorSpace = THREE.SRGBColorSpace
-    texture.wrapS = THREE.ClampToEdgeWrapping
-    texture.wrapT = THREE.ClampToEdgeWrapping
-    texture.repeat.set(1, 1)
-    texture.offset.set(0, 0)
-    if (planeAspect > imageAspect) {
-      const repeatY = imageAspect / planeAspect
-      texture.repeat.set(1, repeatY)
-      texture.offset.set(0, (1 - repeatY) / 2)
-    } else {
-      const repeatX = planeAspect / imageAspect
-      texture.repeat.set(repeatX, 1)
-      texture.offset.set((1 - repeatX) / 2, 0)
-    }
-    texture.needsUpdate = true
-  }, [texture])
-
-  return (
-    <group position={[3, 2.38, -4.59]}>
-      <mesh>
-        <planeGeometry args={[1.45, 1.62]} />
-        <meshStandardMaterial
-          map={texture}
-          roughness={0.94}
-          emissive="#ffffff"
-          emissiveIntensity={0.05}
-          toneMapped={false}
-        />
-      </mesh>
     </group>
   )
 }
@@ -343,4 +222,17 @@ function LeanArt({
       </mesh>
     </group>
   )
+}
+
+function ProjectDisplay() {
+  const [texture, setTexture] = useState<THREE.Texture | null>(null)
+  useEffect(() => {
+    let disposed = false; let loaded: THREE.Texture | null = null
+    new THREE.TextureLoader().load(assetPath('/projects/798/hero-final.jpg'), t => {
+      if (disposed) {t.dispose();return}
+      t.colorSpace = THREE.SRGBColorSpace; loaded = t; setTexture(t)
+    })
+    return () => {disposed = true;loaded?.dispose()}
+  }, [])
+  return <><mesh position={[0, .09, .065]}><planeGeometry args={[2.18, 1.08]} /><meshStandardMaterial map={texture} color={texture?'#ffffff':'#d8c6a6'} roughness={.85} /></mesh><Html position={[0,-.64,.08]} center zIndexRange={[30,0]} style={{pointerEvents:'none'}}><span className="display-label">798 · 从方案到现场</span></Html></>
 }
