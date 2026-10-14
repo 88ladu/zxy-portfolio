@@ -31,11 +31,12 @@ interface CamState {
   look: THREE.Vector3
 }
 
-function sphericalPos(c: CamState, out: THREE.Vector3) {
+function sphericalPos(c: CamState, out: THREE.Vector3, aspect = 1) {
+  const distance = c.dist * Math.max(1, 1.15 / aspect)
   out.set(
-    c.tx + c.dist * Math.sin(c.yaw) * Math.cos(c.pitch),
-    c.ty + c.dist * Math.sin(c.pitch),
-    c.tz + c.dist * Math.cos(c.yaw) * Math.cos(c.pitch),
+    c.tx + distance * Math.sin(c.yaw) * Math.cos(c.pitch),
+    c.ty + distance * Math.sin(c.pitch),
+    c.tz + distance * Math.cos(c.yaw) * Math.cos(c.pitch),
   )
   return out
 }
@@ -64,7 +65,7 @@ export function CameraRig() {
 
   useEffect(() => {
     const cam = camera as THREE.PerspectiveCamera
-    sphericalPos(cur.current, cam.position)
+    sphericalPos(cur.current, cam.position, cam.aspect)
     cam.lookAt(cur.current.tx, cur.current.ty, cur.current.tz)
     cam.fov = INTRO.fov
     cam.updateProjectionMatrix()
@@ -213,11 +214,11 @@ export function CameraRig() {
       cam.position.copy(c.pos)
       cam.lookAt(c.look)
     } else if (st.mode === 'orbit') {
-      sphericalPos(c, cam.position)
+      sphericalPos(c, cam.position, cam.aspect)
 
       cam.lookAt(c.tx, c.ty, c.tz)
     } else {
-      sphericalPos(c, cam.position)
+      sphericalPos(c, cam.position, cam.aspect)
       cam.lookAt(c.tx, c.ty, c.tz)
     }
     cam.fov = c.fov
