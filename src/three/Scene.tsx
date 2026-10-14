@@ -11,6 +11,7 @@ import { Decor } from './Decor'
 import { HotspotMarkers } from './Hotspot'
 import { CameraRig } from './CameraRig'
 import { WeatherParticles } from './Weather'
+import { WorldSky, OceanSurface } from './WorldSky'
 
 function isMobileDevice() {
   if (typeof window === 'undefined') return false
@@ -24,7 +25,7 @@ function EnvSetup() {
   const time = useApp((s) => s.time)
   const env = useMemo(() => getEnv(season, time), [season, time])
   useEffect(() => {
-    scene.background = weather === 'clear' ? new THREE.Color(env.background) : null
+    scene.background = null
     gl.toneMappingExposure = env.exposure
   }, [gl, scene, env, weather])
   return null
@@ -90,11 +91,13 @@ export function Scene({ onReady }: { onReady: () => void }) {
       shadows={!lowSpec}
       dpr={lowSpec ? 1 : mobile ? [1, 1.25] : [1, 1.5]}
       gl={{ antialias: !lowSpec, toneMapping: THREE.ACESFilmicToneMapping }}
-      camera={{ fov: 21, near: 0.1, far: 90, position: [10.2, 13.5, 12.8] }}
+      camera={{ fov: 21, near: 0.1, far: 200, position: [10.2, 13.5, 12.8] }}
     >
       <LoadReporter onReady={onReady} />
       <EnvSetup />
       <Lights />
+      <WorldSky />
+      <OceanSurface />
       <WeatherParticles />
       {weather === 'aurora' && <pointLight position={[0,5,-4]} color="#58d8c7" intensity={4} distance={15} />}
       <Room />

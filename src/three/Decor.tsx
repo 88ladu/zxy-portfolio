@@ -81,8 +81,8 @@ export function Decor() {
       <DeferredGlbModel
         url={assetPath('/models/decor-art.optimized.glb')}
         fit="height"
-        size={1.22}
-        position={[3.25, 2.05, -2.3]}
+        size={0.9}
+        position={[2.85, 2.13, -2.75]}
         rotation={[0, -0.55, 0]}
         delay={1200}
       />
