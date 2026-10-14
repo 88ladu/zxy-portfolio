@@ -3,7 +3,7 @@ import type { HotspotId } from '@/three/hotspotConfig'
 import type { Season, TimeOfDay } from '@/three/environment'
 
 export type Mode = 'intro' | 'orbit' | 'focus'
-export type OverlayId = 'overview' | 'books' | 'drawer' | 'photos' | 'desktop' | null
+export type OverlayId = 'overview' | 'books' | 'drawer' | 'photos' | 'desktop' | 'project-files' | 'case-preview' | 'draw' | null
 
 interface AppState {
   ready: boolean
@@ -15,6 +15,9 @@ interface AppState {
   time: TimeOfDay
   deskLampOn: boolean
   musicOn: boolean
+  musicPanelOpen: boolean
+  weather: 'clear' | 'rain' | 'snow' | 'aurora'
+  drawing: string | null
   lowSpec: boolean
   fallback: boolean
   hovered: HotspotId | null
@@ -29,6 +32,9 @@ interface AppState {
   setTime: (t: TimeOfDay) => void
   toggleDeskLamp: () => void
   setMusicOn: (v: boolean) => void
+  setMusicPanelOpen: (v: boolean) => void
+  setWeather: (v: AppState['weather']) => void
+  setDrawing: (v: string | null) => void
   setLowSpec: (v: boolean) => void
   setFallback: (v: boolean) => void
   setOverlay: (o: OverlayId) => void
@@ -45,6 +51,9 @@ export const useApp = create<AppState>((set, get) => ({
   time: 'noon',
   deskLampOn: false,
   musicOn: false,
+  musicPanelOpen: false,
+  weather: 'clear',
+  drawing: null,
   lowSpec: false,
   fallback: false,
   hovered: null,
@@ -67,6 +76,9 @@ export const useApp = create<AppState>((set, get) => ({
   setTime: (time) => set({ time }),
   toggleDeskLamp: () => set((s) => ({ deskLampOn: !s.deskLampOn })),
   setMusicOn: (musicOn) => set({ musicOn }),
+  setMusicPanelOpen: (musicPanelOpen) => set({ musicPanelOpen }),
+  setWeather: (weather) => set({ weather }),
+  setDrawing: (drawing) => set({ drawing }),
   setLowSpec: (lowSpec) => set({ lowSpec }),
   setFallback: (fallback) => set({ fallback }),
   setOverlay: (overlay) => set({ overlay }),

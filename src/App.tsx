@@ -8,8 +8,9 @@ import { CabinetDrawer } from '@/components/CabinetDrawer'
 import { BookList } from '@/components/BookList'
 import { PhotoWall } from '@/components/PhotoWall'
 import { CorkModal } from '@/components/CorkModal'
-import { Fallback } from '@/components/Fallback'
 import { SitePages } from '@/components/SitePages'
+import { Atmosphere, MusicPlayer, StudioExperiences } from '@/components/StudioPlay'
+import { openStudioPlayer } from '@/music'
 import { navigateHome, pageFromHash } from '@/navigation'
 import { HOTSPOTS } from '@/three/hotspotConfig'
 
@@ -91,12 +92,13 @@ export default function App() {
   }, [])
 
   if (!webgl || fallback) {
-    return <Fallback canReturn={webgl} />
+    return <><div className="fallback-gallery-note"><p>当前使用图文模式，仍可浏览完整作品与体验。</p>{webgl && <button onClick={() => useApp.getState().setFallback(false)}>返回工作岛</button>}<EnvironmentControls /><div className="fallback-play-actions"><button onClick={() => useApp.getState().setOverlay('project-files')}>打开项目文件</button><button onClick={() => useApp.getState().setOverlay('draw')}>画架涂鸦</button><button onClick={openStudioPlayer}>唱片音乐</button></div></div><SitePages /><StudioExperiences /><MusicPlayer /></>
   }
 
   return (
     <div className="site-shell">
       <section id="home" className="stage" aria-label="3D 个人工作室首页">
+        <Atmosphere />
         {homeSceneEnabled && <SceneBoundary><Scene onReady={() => useApp.getState().setReady(true)} /></SceneBoundary>}
         <Topbar />
         <EnvironmentControls />
@@ -108,8 +110,16 @@ export default function App() {
         <BookList />
         <PhotoWall />
         <CorkModal />
+        <div className="studio-quick-actions" aria-label="工作岛探索入口">
+          <button onClick={() => {useApp.getState().enter();useApp.getState().focus('desk');useApp.getState().setOverlay('project-files')}}>打开项目文件</button>
+          <button onClick={() => {useApp.getState().enter();useApp.getState().focus('gallery');useApp.getState().setOverlay('case-preview')}}>方案与现场</button>
+          <button onClick={() => {useApp.getState().enter();useApp.getState().focus('easel');useApp.getState().setOverlay('draw')}}>画架涂鸦</button>
+          <button onClick={openStudioPlayer}>唱片音乐</button>
+        </div>
       </section>
       <SitePages />
+      <StudioExperiences />
+      <MusicPlayer />
       {homeSceneEnabled && !loaderGone && <Loader fading={ready} />}
     </div>
   )
