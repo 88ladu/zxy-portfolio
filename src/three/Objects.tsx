@@ -51,7 +51,7 @@ export function Objects() {
   const stop = (e: ThreeEvent<MouseEvent>) => e.stopPropagation()
   const openProjects = (e: ThreeEvent<MouseEvent>) => {
     stop(e)
-    if (interactive && !dragState.moved) focus('desk')
+    if (interactive && !dragState.moved) { focus('desk'); useApp.getState().setOverlay('project-files') }
   }
   const openAbout = (e: ThreeEvent<MouseEvent>) => {
     stop(e)
@@ -177,7 +177,7 @@ export function Objects() {
           position={[0.0, 0.94, -0.34]}
           onClick={(e) => {
             stop(e)
-            if (interactive && !dragState.moved) focus('desk')
+            if (interactive && !dragState.moved) { focus('desk'); useApp.getState().setOverlay('project-files') }
           }}
           onPointerOver={() => interactive && hoverCursor(true)}
           onPointerOut={() => hoverCursor(false)}

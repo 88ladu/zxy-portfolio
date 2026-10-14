@@ -6,16 +6,16 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { useApp, dragState } from '@/store'
 import { HOTSPOT_BY_ID } from './hotspotConfig'
 
-const INTRO = { yaw: 0.12, pitch: 0.3, dist: 7.8, fov: 36, tx: 0.48, ty: 1.48, tz: -1.05 }
-const ORBIT = { yaw: 0.16, pitch: 0.34, dist: 7.05, fov: 37, tx: 0.48, ty: 1.54, tz: -1.1 }
+const INTRO = { yaw: 0.12, pitch: 0.3, dist: 14.5, fov: 40, tx: 0.48, ty: 1.48, tz: -1.05 }
+const ORBIT = { yaw: 0.16, pitch: 0.34, dist: 14, fov: 40, tx: 0.48, ty: 1.54, tz: -1.1 }
 const FOCUS_FOV = 40
 const LIM = {
-  yawMin: -0.85,
-  yawMax: 1.25,
+  yawMin: -Math.PI,
+  yawMax: Math.PI,
   pitchMin: 0.2,
   pitchMax: 1.18,
-  distMin: 4.6,
-  distMax: 8.8,
+  distMin: 7,
+  distMax: 16,
 }
 const GLIDE_EPS = { yaw: 0.012, pitch: 0.012, dist: 0.06 }
 
@@ -38,14 +38,6 @@ function sphericalPos(c: CamState, out: THREE.Vector3) {
     c.tz + c.dist * Math.cos(c.yaw) * Math.cos(c.pitch),
   )
   return out
-}
-
-/** 把相机约束在开放工作室内部：墙面留 0.25 缝隙。 */
-function clampInside(p: THREE.Vector3) {
-  p.x = THREE.MathUtils.clamp(p.x, -4.35, 4.35)
-  p.z = THREE.MathUtils.clamp(p.z, -4.35, 6.6)
-  p.y = THREE.MathUtils.clamp(p.y, 0.45, 4.9)
-  return p
 }
 
 export function CameraRig() {
@@ -222,7 +214,7 @@ export function CameraRig() {
       cam.lookAt(c.look)
     } else if (st.mode === 'orbit') {
       sphericalPos(c, cam.position)
-      clampInside(cam.position)
+
       cam.lookAt(c.tx, c.ty, c.tz)
     } else {
       sphericalPos(c, cam.position)

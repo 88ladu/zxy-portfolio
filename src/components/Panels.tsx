@@ -128,7 +128,8 @@ export function HotspotPanel() {
   const activeId = useApp((s) => s.activeId)
   const closeFocus = useApp((s) => s.closeFocus)
   const setOverlay = useApp((s) => s.setOverlay)
-  if (!activeId) return null
+  const overlay = useApp((s) => s.overlay)
+  if (!activeId || overlay) return null
 
   const copy: Record<HotspotId, { kicker: string; title: string; body: string; cta: string; action: () => void }> = {
     desk: {
@@ -136,11 +137,11 @@ export function HotspotPanel() {
       title: '桌面项目',
       body: '正在发生的设计、研究与实验',
       cta: '进入桌面 →',
-      action: () => navigateToPage('projects'),
+      action: () => setOverlay('project-files'),
     },
     chair: {
       kicker: 'ABOUT ME',
-      title: '你好，我是 XXX',
+      title: '你好，我是张芯瑜',
       body: '景观 / 空间 / 数字体验设计。关注空间、文化与数字媒介之间的关系。',
       cta: '认识我 →',
       action: () => navigateToPage('about'),
@@ -150,14 +151,14 @@ export function HotspotPanel() {
       title: '代表作品',
       body: '探索我的设计项目',
       cta: '查看全部作品 →',
-      action: () => navigateToPage('portfolio'),
+      action: () => setOverlay('case-preview'),
     },
     easel: {
       kicker: 'SKETCHBOOK',
       title: '灵感 / 草图 / 实验',
       body: '这里收集了一些没有成为正式项目的想法。',
       cta: '翻开我的灵感簿 →',
-      action: () => setOverlay('photos'),
+      action: () => setOverlay('draw'),
     },
     profile: {
       kicker: 'PROFILE',
