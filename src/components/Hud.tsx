@@ -12,7 +12,7 @@ export function Hero() {
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
-  if (mode === 'focus' || inContentPage) return null
+  if (mode === 'focus') return null
   return (
     <aside className="hero">
       <div className="hero-headline">在工作岛，发现我的设计</div>
@@ -47,7 +47,7 @@ export function Guide() {
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
-  if (overlay || mode === 'focus' || inContentPage) return null
+  if (overlay || mode === 'focus') return null
   const text =
     mode === 'intro'
       ? '点击画面，进入个人工作室'
@@ -74,7 +74,6 @@ export function EnvironmentControls() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
-  if (inContentPage) return null
 
   return (
     <div className="stage-env-switches" aria-label="场景氛围">
