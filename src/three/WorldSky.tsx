@@ -7,7 +7,7 @@ export function WorldSky() {
   const weather = useApp(s => s.weather), time = useApp(s => s.time)
   const reduced = useMemo(() => matchMedia('(prefers-reduced-motion: reduce)').matches, [])
   const resources = useMemo(() => {
-    const canvas = document.createElement('canvas'); canvas.width = 1024; canvas.height = 512
+    const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 256
     const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace
     const stars = new THREE.BufferGeometry(), points = new Float32Array(1800 * 3)
     let seed = 142; const rand = () => {seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296}
@@ -24,17 +24,16 @@ export function WorldSky() {
     const colors = weather === 'aurora' ? ['#060d22','#172e3b'] : weather === 'ocean' ? (night?['#071021','#243945']:['#8eb7cd','#d9e9e9']) : weather === 'rain' ? (night?['#0c1927','#253945']:['#5d7584','#9aabb1']) : weather === 'snow' ? (night?['#102134','#405969']:['#a8c0cf','#eff3f1']) : (night?['#101526','#303342']:['#e5dece','#f2eadc'])
     const bg = ctx.createLinearGradient(0,0,0,c.height);bg.addColorStop(0,colors[0]);bg.addColorStop(1,colors[1]);ctx.fillStyle=bg;ctx.fillRect(0,0,c.width,c.height)
     if(weather==='aurora') {
-      for(let band=0;band<3;band++){
-        const gradient=ctx.createLinearGradient(0,150,0,420)
-        gradient.addColorStop(0,'rgba(55,223,175,0)');gradient.addColorStop(.5,band===1?'rgba(134,99,233,.65)':'rgba(49,217,166,.72)');gradient.addColorStop(1,'rgba(34,153,170,0)')
-        ctx.fillStyle=gradient
-        for(let x=0;x<c.width;x+=4){
-          const wave=24*Math.sin(x*.008+clock*.1+band*2)+15*Math.sin(x*.018-clock*.08)
-          const ray=.35+.65*(.5+.5*Math.sin(x*.13+clock*.15))
-          ctx.globalAlpha=ray*.65;ctx.fillRect(x,210+wave+band*12,5,150+wave*.5)
-        }
+      ctx.save();ctx.filter='blur(12px)';ctx.globalAlpha=.55
+      for(let band=0;band<3;band++) {
+        const glow=ctx.createLinearGradient(0,70,0,240)
+        glow.addColorStop(0,'rgba(47,199,169,0)');glow.addColorStop(.4,band===1?'rgba(123,100,226,.55)':'rgba(55,216,165,.6)');glow.addColorStop(1,'rgba(36,122,165,0)')
+        ctx.beginPath()
+        for(let x=0;x<=c.width;x+=4){const y=125+20*Math.sin(x*.014+clock*.1+band)+12*Math.sin(x*.032-clock*.07)+band*12;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}
+        for(let x=c.width;x>=0;x-=4){const y=195+20*Math.sin(x*.014+clock*.1+band)+12*Math.sin(x*.032-clock*.07)+band*12;ctx.lineTo(x,y)}
+        ctx.closePath();ctx.fillStyle=glow;ctx.fill()
       }
-      ctx.globalAlpha=1
+      ctx.restore()
     }
     resources.texture.needsUpdate=true
   }
