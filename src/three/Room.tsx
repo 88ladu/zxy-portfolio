@@ -234,5 +234,5 @@ function ProjectDisplay() {
     })
     return () => {disposed = true;loaded?.dispose()}
   }, [])
-  return <><mesh position={[0, .09, .065]}><planeGeometry args={[2.18, 1.08]} /><meshStandardMaterial map={texture} color={texture?'#ffffff':'#d8c6a6'} roughness={.85} /></mesh><Html position={[0,-.64,.08]} center zIndexRange={[30,0]} style={{pointerEvents:'none'}}><span className="display-label">798 · 从方案到现场</span></Html></>
+  return <><mesh position={[-.56, .3, .065]}><planeGeometry args={[1.0, .5]} /><meshStandardMaterial map={texture} color={texture?'#ffffff':'#d8c6a6'} roughness={.85} /></mesh>{[[.56,.3],[-.56,-.3],[.56,-.3]].map(([x,y],i)=><group key={i} position={[x,y,.065]}><mesh><planeGeometry args={[1.0,.5]} /><meshStandardMaterial color="#eee4d3" roughness={.9}/></mesh><Html position={[0,0,.01]} center zIndexRange={[30,0]} style={{pointerEvents:'none'}}><span className="board-placeholder">PROJECT {String(i+2).padStart(2,'0')}<small>待补充</small></span></Html></group>)}<Html position={[-.56,-.04,.08]} center zIndexRange={[30,0]} style={{pointerEvents:'none'}}><span className="display-label">798 艺术节</span></Html></>
 }

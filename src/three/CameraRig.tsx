@@ -6,8 +6,8 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { useApp, dragState } from '@/store'
 import { HOTSPOT_BY_ID } from './hotspotConfig'
 
-const INTRO = { yaw: 0.12, pitch: 0.3, dist: 14.5, fov: 40, tx: 0.48, ty: 1.48, tz: -1.05 }
-const ORBIT = { yaw: 0.16, pitch: 0.34, dist: 14, fov: 40, tx: 0.48, ty: 1.54, tz: -1.1 }
+const INTRO = { yaw: 0.12, pitch: 0.3, dist: 13, fov: 40, tx: 0.48, ty: 1.48, tz: -1.05 }
+const ORBIT = { yaw: 0.16, pitch: 0.34, dist: 12.6, fov: 40, tx: 0.48, ty: 1.54, tz: -1.1 }
 const FOCUS_FOV = 40
 const LIM = {
   yawMin: -Math.PI,
@@ -32,7 +32,7 @@ interface CamState {
 }
 
 function sphericalPos(c: CamState, out: THREE.Vector3, aspect = 1) {
-  const distance = c.dist * Math.max(1, 1.15 / aspect)
+  const distance = c.dist * Math.max(.82, 1.12 / aspect)
   out.set(
     c.tx + distance * Math.sin(c.yaw) * Math.cos(c.pitch),
     c.ty + distance * Math.sin(c.pitch),
