@@ -15,8 +15,8 @@ export function Hero() {
   if (mode === 'focus' || inContentPage) return null
   return (
     <aside className="hero">
-      <div className="hero-headline">走进我的 3D 个人工作室</div>
-      <div className="hero-sub">第一屏 3D 导航 · 向下滚动继续探索</div>
+      <div className="hero-headline">在工作岛，发现我的设计</div>
+      <div className="hero-sub">打开文件 · 留下一笔 · 换一种天气</div>
       <ul className="hero-tags">
         <li>
           <button type="button" onClick={() => navigateToPage('about')}>
@@ -51,7 +51,7 @@ export function Guide() {
   const text =
     mode === 'intro'
       ? '点击画面，进入个人工作室'
-      : '拖动环绕 · 点击物体聚焦 · 再点文字进入对应内容 · 向下滚动继续探索'
+      : '拖动环绕 · 点击桌面文件、展示架或画架 · 向下滚动查看作品'
   return (
     <div className="guide" role="status">
       {text}
@@ -60,6 +60,8 @@ export function Guide() {
 }
 
 export function EnvironmentControls() {
+  const weather = useApp(s => s.weather)
+  const setWeather = useApp(s => s.setWeather)
   const season = useApp((s) => s.season)
   const time = useApp((s) => s.time)
   const setSeason = useApp((s) => s.setSeason)
@@ -76,6 +78,9 @@ export function EnvironmentControls() {
 
   return (
     <div className="stage-env-switches" aria-label="场景氛围">
+      <div className="switch-group studio-weather-switch" role="group" aria-label="天气场景">
+        {(['clear','rain','snow','aurora'] as const).map((w,i)=><button key={w} className={`chip${weather===w?' is-active':''}`} aria-pressed={weather===w} onClick={()=>setWeather(w)}>{['晴天','下雨','下雪','极光'][i]}</button>)}
+      </div>
       <div className="switch-group" role="group" aria-label="季节">
         {SEASONS.map((s) => (
           <button
