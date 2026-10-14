@@ -24,13 +24,13 @@ export function WorldSky() {
     const colors = weather === 'aurora' ? ['#060d22','#172e3b'] : weather === 'ocean' ? (night?['#071021','#243945']:['#8eb7cd','#d9e9e9']) : weather === 'rain' ? (night?['#0c1927','#253945']:['#5d7584','#9aabb1']) : weather === 'snow' ? (night?['#102134','#405969']:['#a8c0cf','#eff3f1']) : (night?['#101526','#303342']:['#e5dece','#f2eadc'])
     const bg = ctx.createLinearGradient(0,0,0,c.height);bg.addColorStop(0,colors[0]);bg.addColorStop(1,colors[1]);ctx.fillStyle=bg;ctx.fillRect(0,0,c.width,c.height)
     if(weather==='aurora') {
-      ctx.save();ctx.filter='blur(12px)';ctx.globalAlpha=.55
+      ctx.save();ctx.filter='blur(6px)';ctx.globalAlpha=.7
       for(let band=0;band<3;band++) {
-        const glow=ctx.createLinearGradient(0,70,0,240)
+        const glow=ctx.createLinearGradient(0,120,0,245)
         glow.addColorStop(0,'rgba(47,199,169,0)');glow.addColorStop(.4,band===1?'rgba(123,100,226,.55)':'rgba(55,216,165,.6)');glow.addColorStop(1,'rgba(36,122,165,0)')
         ctx.beginPath()
-        for(let x=0;x<=c.width;x+=4){const y=125+20*Math.sin(x*.014+clock*.1+band)+12*Math.sin(x*.032-clock*.07)+band*12;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}
-        for(let x=c.width;x>=0;x-=4){const y=195+20*Math.sin(x*.014+clock*.1+band)+12*Math.sin(x*.032-clock*.07)+band*12;ctx.lineTo(x,y)}
+        for(let x=0;x<=c.width;x+=4){const y=160+20*Math.sin(x*.014+clock*.1+band)+12*Math.sin(x*.032-clock*.07)+band*7;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}
+        for(let x=c.width;x>=0;x-=4){const y=205+20*Math.sin(x*.014+clock*.1+band)+12*Math.sin(x*.032-clock*.07)+band*7;ctx.lineTo(x,y)}
         ctx.closePath();ctx.fillStyle=glow;ctx.fill()
       }
       ctx.restore()
