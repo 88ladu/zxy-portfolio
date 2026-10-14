@@ -16,7 +16,7 @@ interface AppState {
   deskLampOn: boolean
   musicOn: boolean
   musicPanelOpen: boolean
-  weather: 'clear' | 'rain' | 'snow' | 'aurora'
+  weather: 'clear' | 'rain' | 'snow' | 'aurora' | 'ocean'
   drawing: string | null
   lowSpec: boolean
   fallback: boolean
